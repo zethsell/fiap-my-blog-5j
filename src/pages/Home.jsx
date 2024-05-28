@@ -15,18 +15,6 @@ function Home() {
                             title={"Post 1"}
                             text={"Texto do post 1"}
                         />
-                        <Card
-                            title={"Post 1"}
-                            text={"Texto do post 1"}
-                        />
-                        <Card
-                            title={"Post 1"}
-                            text={"Texto do post 1"}
-                        />
-                        <Card
-                            title={"Post 1"}
-                            text={"Texto do post 1"}
-                        />
 
                         <a href="#" className="btn btn-dark mt-4">
                             Ver todos os posts
