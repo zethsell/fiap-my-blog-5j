@@ -1,4 +1,6 @@
-function Card({title, text, link = "#", linkText = "Ver post"}) {
+import { Link } from "react-router-dom";
+
+function Card({title, text, link = "/", linkText = "Ver post"}) {
     return (
         <div className="card mb-3">
             <div className="card-body">
@@ -8,9 +10,9 @@ function Card({title, text, link = "#", linkText = "Ver post"}) {
                 <p className="card-text">
                     {text}
                 </p>
-                <a href={link} className="btn btn-primary">
+                <Link to={link} className="btn btn-primary">
                     {linkText}
-                </a>
+                </Link>
             </div>
         </div>
     )
