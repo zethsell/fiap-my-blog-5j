@@ -39,8 +39,9 @@ function Post() {
                             <>
                                 <h1>{post.fields.blogPostTitle}</h1>
                         
-                                <div dangerouslySetInnerHTML={{ __html: documentToHtmlString(post.fields.blogPostContent)}}>
-                                </div>
+                                <div 
+                                    dangerouslySetInnerHTML={{ __html: documentToHtmlString(post.fields.blogPostContent)}}
+                                />
                                 
                                 <Link to="/" className="btn btn-primary mt-4">
                                     Voltar para Home
