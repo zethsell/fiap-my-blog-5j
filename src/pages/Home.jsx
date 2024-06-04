@@ -52,7 +52,7 @@ function Home() {
                 <div className="row">
                     <main className="col-md-8">
                         <h2 className="mb-3">
-                            Últimos posts
+                            Posts recentes
                         </h2>
 
                         {posts.map( (item) => (
