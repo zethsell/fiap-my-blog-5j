@@ -4,11 +4,15 @@ import {Link} from "react-router-dom";
 import Card from "../components/Card";
 import Layout from "../components/Layout";
 
-import {contentfulClient} from "../utils/createContentfulClient";
+import {contentfulClient} from "../utils/index.js";
+import Paginator from "../components/Paginator/index.jsx";
 
-function Home() {
+function PostList() {
     const [categories, setCategories] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [tempPosts, setTempPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const perPage = 3
 
     const getCategories = async () => {
         try {
@@ -17,6 +21,7 @@ function Home() {
             });
 
             setCategories(response.items);
+
         } catch (error) {
             console.log('Erro ao obter categorias', error);
             setCategories([]);
@@ -28,23 +33,38 @@ function Home() {
             // se a promise for resolvida, o resultado é capturado aqui
             const response = await contentfulClient.getEntries({
                 content_type: 'blogPost5j',
-                limit: 5,
                 order: '-sys.createdAt',
             });
 
-            console.log(response.items);
             setPosts(response.items);
+            setTempPosts(response.items.slice(0, perPage));
+            setCurrentPage(1)
         } catch (error) {
             // se a promise for rejeitada, o erro é capturado aqui
-            console.log('Erro ao obter posts', error);
+            console.error('Erro ao obter posts', error);
             setPosts([]);
+            setTempPosts([]);
         }
     };
+
+    const paginate = () => {
+        let start = currentPage === 1 ? 0 : (currentPage * perPage) - perPage;
+        let end = currentPage === 1 ? perPage : (start + perPage);
+        setTempPosts(posts.slice(start, end))
+    }
+
+    const setPage = (page) => {
+        setCurrentPage(page)
+    }
 
     useEffect(() => {
         getCategories();
         getPosts();
-    }, []); // useEffect -> onLoad do componente Home
+    }, []); // useEffect -> onLoad do componente PostList
+
+    useEffect(() => {
+        paginate();
+    }, [currentPage]); // useEffect -> onLoad do componente PostList
 
     return (
         <Layout>
@@ -52,10 +72,9 @@ function Home() {
                 <div className="row">
                     <main className="col-md-8">
                         <h2 className="mb-3">
-                            Posts recentes
+                            Todos os Posts
                         </h2>
-
-                        {posts.map((item) => (
+                        {tempPosts?.map((item) => (
                             <Card
                                 key={item.sys.id}
                                 title={item.fields.blogPostTitle}
@@ -64,8 +83,9 @@ function Home() {
                             />
                         ))}
 
-                        <Link to="/posts?page=1" className="btn btn-dark mt-4">
-                            Ver todos os posts
+                        <Paginator total={posts.length} perPage={perPage} page={setPage}/>
+                        <Link to="/" className="btn btn-primary mt-4">
+                            Voltar para Home
                         </Link>
                     </main>
 
@@ -82,4 +102,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default PostList;
